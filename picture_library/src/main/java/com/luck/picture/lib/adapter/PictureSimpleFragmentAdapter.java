@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,8 +14,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.viewpager.widget.PagerAdapter;
+import android.support.annotation.NonNull;
 
 import com.luck.picture.lib.R;
 import com.luck.picture.lib.config.PictureConfig;
@@ -29,7 +29,7 @@ import com.luck.picture.lib.widget.longimage.ImageSource;
 import com.luck.picture.lib.widget.longimage.ImageViewState;
 import com.luck.picture.lib.widget.longimage.SubsamplingScaleImageView;
 
-import org.jetbrains.annotations.NotNull;
+import android.support.annotation.NonNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -137,13 +137,13 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(@NotNull View view, @NotNull Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
     }
 
-    @NotNull
+    @NonNull
     @Override
-    public Object instantiateItem(@NotNull ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View contentView = mCacheView.get(position);
         if (contentView == null) {
             contentView = LayoutInflater.from(container.getContext())

@@ -16,17 +16,18 @@
 
 package com.yalantis.ucrop;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.luck.picture.lib.R;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.config.PictureSelectionConfig;
 import com.luck.picture.lib.entity.LocalMedia;
+
 import java.util.List;
 
 /**
@@ -76,7 +77,8 @@ public class PicturePhotoGalleryAdapter extends RecyclerView.Adapter<PicturePhot
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {
-                        listener.onItemClick(holder.getAbsoluteAdapterPosition(), v);
+//                        listener.onItemClick(holder.getAbsoluteAdapterPosition(), v);
+                        listener.onItemClick(holder.getAdapterPosition(), v);
                     }
                 }
             });

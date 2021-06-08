@@ -66,5 +66,5 @@
         android:textColor="@color/picture_color_white"
         android:textSize="11sp"
         android:visibility="gone"
-        app:drawableLeftCompat="@drawable/picture_icon_video" />
+        android:drawableLeft="@drawable/picture_icon_video" />
 </com.luck.picture.lib.widget.SquareRelativeLayout>

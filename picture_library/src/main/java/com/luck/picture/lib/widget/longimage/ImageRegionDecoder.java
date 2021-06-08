@@ -6,7 +6,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 
 /**
  * Interface for image decoding classes, allowing the default {@link android.graphics.BitmapRegionDecoder}

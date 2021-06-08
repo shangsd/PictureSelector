@@ -17,6 +17,6 @@
         android:text="@string/picture_take_picture"
         android:textColor="@color/picture_color_white"
         android:textSize="14sp"
-        app:drawableTopCompat="@drawable/picture_icon_camera" />
+        android:drawableLeft="@drawable/picture_icon_camera" />
 
 </com.luck.picture.lib.widget.SquareRelativeLayout>

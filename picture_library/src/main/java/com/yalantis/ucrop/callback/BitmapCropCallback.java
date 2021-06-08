@@ -2,7 +2,7 @@ package com.yalantis.ucrop.callback;
 
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 
 public interface BitmapCropCallback {
 

@@ -4,11 +4,10 @@ import android.content.pm.ActivityInfo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.StyleRes;
+import android.support.annotation.ColorInt;
+import android.support.annotation.StyleRes;
 
 import com.luck.picture.lib.R;
-import com.luck.picture.lib.camera.CustomCameraView;
 import com.luck.picture.lib.engine.CacheResourcesEngine;
 import com.luck.picture.lib.engine.CompressEngine;
 import com.luck.picture.lib.engine.ImageEngine;
@@ -53,7 +52,6 @@ public final class PictureSelectionConfig implements Parcelable {
     @Deprecated
     public String specifiedFormat;
     public int requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
-    public int buttonFeatures = CustomCameraView.BUTTON_STATE_BOTH;
     public int captureLoadingColor;
     public boolean isCameraAroundState;
     public boolean isAndroidQTransform;
@@ -85,7 +83,6 @@ public final class PictureSelectionConfig implements Parcelable {
     public boolean isMultipleRecyclerAnimation;
     public boolean isMultipleSkipCrop;
     public boolean isWeChatStyle;
-    public boolean isUseCustomCamera;
     public boolean zoomAnim;
     public boolean isCompress;
     public boolean isOriginalControl;
@@ -156,7 +153,6 @@ public final class PictureSelectionConfig implements Parcelable {
     public int upResId;
     @Deprecated
     public int downResId;
-    public String outPutCameraPath;
 
     public String originalPath;
     public String cameraPath;
@@ -197,7 +193,6 @@ public final class PictureSelectionConfig implements Parcelable {
         renameCropFileName = in.readString();
         specifiedFormat = in.readString();
         requestedOrientation = in.readInt();
-        buttonFeatures = in.readInt();
         captureLoadingColor = in.readInt();
         isCameraAroundState = in.readByte() != 0;
         isAndroidQTransform = in.readByte() != 0;
@@ -227,7 +222,6 @@ public final class PictureSelectionConfig implements Parcelable {
         isMultipleRecyclerAnimation = in.readByte() != 0;
         isMultipleSkipCrop = in.readByte() != 0;
         isWeChatStyle = in.readByte() != 0;
-        isUseCustomCamera = in.readByte() != 0;
         zoomAnim = in.readByte() != 0;
         isCompress = in.readByte() != 0;
         isOriginalControl = in.readByte() != 0;
@@ -273,7 +267,6 @@ public final class PictureSelectionConfig implements Parcelable {
         cropTitleColor = in.readInt();
         upResId = in.readInt();
         downResId = in.readInt();
-        outPutCameraPath = in.readString();
         originalPath = in.readString();
         cameraPath = in.readString();
         cameraMimeType = in.readInt();
@@ -309,7 +302,6 @@ public final class PictureSelectionConfig implements Parcelable {
         dest.writeString(renameCropFileName);
         dest.writeString(specifiedFormat);
         dest.writeInt(requestedOrientation);
-        dest.writeInt(buttonFeatures);
         dest.writeInt(captureLoadingColor);
         dest.writeByte((byte) (isCameraAroundState ? 1 : 0));
         dest.writeByte((byte) (isAndroidQTransform ? 1 : 0));
@@ -339,7 +331,6 @@ public final class PictureSelectionConfig implements Parcelable {
         dest.writeByte((byte) (isMultipleRecyclerAnimation ? 1 : 0));
         dest.writeByte((byte) (isMultipleSkipCrop ? 1 : 0));
         dest.writeByte((byte) (isWeChatStyle ? 1 : 0));
-        dest.writeByte((byte) (isUseCustomCamera ? 1 : 0));
         dest.writeByte((byte) (zoomAnim ? 1 : 0));
         dest.writeByte((byte) (isCompress ? 1 : 0));
         dest.writeByte((byte) (isOriginalControl ? 1 : 0));
@@ -385,7 +376,6 @@ public final class PictureSelectionConfig implements Parcelable {
         dest.writeInt(cropTitleColor);
         dest.writeInt(upResId);
         dest.writeInt(downResId);
-        dest.writeString(outPutCameraPath);
         dest.writeString(originalPath);
         dest.writeString(cameraPath);
         dest.writeInt(cameraMimeType);
@@ -477,7 +467,6 @@ public final class PictureSelectionConfig implements Parcelable {
         isFallbackVersion3 = true;
         enableCrop = false;
         isWeChatStyle = false;
-        isUseCustomCamera = false;
         isMultipleSkipCrop = true;
         isMultipleRecyclerAnimation = true;
         freeStyleCropEnabled = false;
@@ -514,7 +503,6 @@ public final class PictureSelectionConfig implements Parcelable {
         isChangeStatusBarFontColor = false;
         isOpenStyleNumComplete = false;
         isOpenStyleCheckNumMode = false;
-        outPutCameraPath = "";
         sizeMultiplier = 0.5f;
         overrideWidth = 0;
         overrideHeight = 0;

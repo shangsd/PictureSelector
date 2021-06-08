@@ -1,6 +1,7 @@
 package com.luck.picture.lib;
 
-import androidx.core.content.FileProvider;
+
+import android.support.v4.content.FileProvider;
 
 /**
  * @author：luck

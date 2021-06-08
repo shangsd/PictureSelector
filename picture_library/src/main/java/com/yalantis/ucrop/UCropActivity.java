@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.BlendMode;
+import android.graphics.BlendModeColorFilter;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Animatable;
@@ -12,6 +14,20 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
+import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
+import android.support.transition.AutoTransition;
+import android.support.transition.Transition;
+import android.support.transition.TransitionManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.content.res.AppCompatResources;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,22 +44,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.IdRes;
-import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.BlendModeColorFilterCompat;
-import androidx.core.graphics.BlendModeCompat;
-import androidx.transition.AutoTransition;
-import androidx.transition.Transition;
-import androidx.transition.TransitionManager;
 
 import com.luck.picture.lib.R;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -52,6 +52,7 @@ import com.luck.picture.lib.tools.PictureFileUtils;
 import com.luck.picture.lib.tools.ScreenUtils;
 import com.yalantis.ucrop.callback.BitmapCropCallback;
 import com.yalantis.ucrop.model.AspectRatio;
+import com.yalantis.ucrop.util.ColorFilterCompat;
 import com.yalantis.ucrop.util.SelectedStateListDrawable;
 import com.yalantis.ucrop.view.CropImageView;
 import com.yalantis.ucrop.view.GestureCropImageView;
@@ -219,8 +220,9 @@ public class UCropActivity extends AppCompatActivity {
         if (menuItemLoaderIcon != null) {
             try {
                 menuItemLoaderIcon.mutate();
-                ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(mToolbarWidgetColor, BlendModeCompat.SRC_ATOP);
-                menuItemLoaderIcon.setColorFilter(colorFilter);
+                // TODO: 2021/6/7 兼容更改
+//                ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(mToolbarWidgetColor, BlendModeCompat.SRC_ATOP);
+                ColorFilterCompat.setColorFilter(menuItemLoaderIcon, mToolbarWidgetColor);
                 menuItemLoader.setIcon(menuItemLoaderIcon);
             } catch (IllegalStateException e) {
                 Log.i(TAG, String.format("%s - %s", e.getMessage(), "必須指定輸入以及輸出的 Uri"));
@@ -232,8 +234,10 @@ public class UCropActivity extends AppCompatActivity {
         Drawable menuItemCropIcon = ContextCompat.getDrawable(this, mToolbarCropDrawable);
         if (menuItemCropIcon != null) {
             menuItemCropIcon.mutate();
-            ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(mToolbarWidgetColor, BlendModeCompat.SRC_ATOP);
-            menuItemCropIcon.setColorFilter(colorFilter);
+            // TODO: 2021/6/7 兼容更改
+//            ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(mToolbarWidgetColor, BlendModeCompat.SRC_ATOP);
+//            menuItemCropIcon.setColorFilter(colorFilter);
+            ColorFilterCompat.setColorFilter(menuItemCropIcon, mToolbarWidgetColor);
             menuItemCrop.setIcon(menuItemCropIcon);
         }
 
@@ -479,8 +483,10 @@ public class UCropActivity extends AppCompatActivity {
 
         // Color buttons inside the Toolbar
         Drawable stateButtonDrawable = AppCompatResources.getDrawable(this, mToolbarCancelDrawable).mutate();
-        ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(mToolbarWidgetColor, BlendModeCompat.SRC_ATOP);
-        stateButtonDrawable.setColorFilter(colorFilter);
+        // TODO: 2021/6/7 兼容更改
+//        ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(mToolbarWidgetColor, BlendModeCompat.SRC_ATOP);
+//        stateButtonDrawable.setColorFilter(colorFilter);
+        ColorFilterCompat.setColorFilter(stateButtonDrawable, mToolbarWidgetColor);
         toolbar.setNavigationIcon(stateButtonDrawable);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();

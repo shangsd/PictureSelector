@@ -3,7 +3,7 @@ package com.luck.picture.lib.engine;
 import android.content.Context;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 
 import com.luck.picture.lib.listener.OnImageCompleteCallback;
 import com.luck.picture.lib.widget.longimage.SubsamplingScaleImageView;

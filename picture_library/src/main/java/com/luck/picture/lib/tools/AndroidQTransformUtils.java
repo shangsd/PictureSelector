@@ -53,7 +53,7 @@ public class AndroidQTransformUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (inBuffer != null && inBuffer.isOpen()) {
+            if (inBuffer != null) {
                 PictureFileUtils.close(inBuffer);
             }
         }

@@ -1,14 +1,14 @@
 package com.luck.picture.lib;
 
 import android.graphics.Color;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
+import android.support.v4.content.ContextCompat;
 
 import com.luck.picture.lib.adapter.PictureWeChatPreviewGalleryAdapter;
 import com.luck.picture.lib.config.PictureConfig;

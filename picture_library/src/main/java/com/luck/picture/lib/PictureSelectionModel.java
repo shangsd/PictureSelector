@@ -3,14 +3,12 @@ package com.luck.picture.lib;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
+import android.support.annotation.ColorInt;
+import android.support.annotation.FloatRange;
+import android.support.annotation.IntRange;
+import android.support.annotation.StyleRes;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-
-import androidx.annotation.ColorInt;
-import androidx.annotation.FloatRange;
-import androidx.annotation.IntRange;
-import androidx.annotation.StyleRes;
-import androidx.fragment.app.Fragment;
 
 import com.luck.picture.lib.animators.AnimationType;
 import com.luck.picture.lib.config.PictureConfig;
@@ -37,8 +35,6 @@ import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-
-import static android.os.Build.VERSION_CODES.KITKAT;
 
 /**
  * @author：luck
@@ -187,15 +183,6 @@ public class PictureSelectionModel {
     }
 
     /**
-     * @param isUseCustomCamera Whether to use a custom camera
-     * @return
-     */
-    public PictureSelectionModel isUseCustomCamera(boolean isUseCustomCamera) {
-        selectionConfig.isUseCustomCamera = Build.VERSION.SDK_INT > KITKAT && isUseCustomCamera;
-        return this;
-    }
-
-    /**
      * @param callback Provide video playback control，Users are free to customize the video display interface
      * @return
      */
@@ -246,16 +233,6 @@ public class PictureSelectionModel {
      */
     public PictureSelectionModel bindCustomPermissionsObtainListener(OnPermissionsObtainCallback listener) {
         PictureSelectionConfig.onPermissionsObtainCallback = new WeakReference<>(listener).get();
-        return this;
-    }
-
-    /**
-     * @param buttonFeatures Set the record button function
-     *                       # 具体参考 CustomCameraView.BUTTON_STATE_BOTH、BUTTON_STATE_ONLY_CAPTURE、BUTTON_STATE_ONLY_RECORDER
-     * @return
-     */
-    public PictureSelectionModel setButtonFeatures(int buttonFeatures) {
-        selectionConfig.buttonFeatures = buttonFeatures;
         return this;
     }
 
@@ -947,18 +924,6 @@ public class PictureSelectionModel {
     }
 
     /**
-     * Extra used with {@link #Environment.getExternalStorageDirectory() +  File.separator + "CustomCamera" + File.separator}  to indicate that
-     *
-     * @param outPutCameraPath Camera save path 只支持Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
-     * @return
-     */
-    public PictureSelectionModel setOutputCameraPath(String outPutCameraPath) {
-        selectionConfig.outPutCameraPath = outPutCameraPath;
-        return this;
-    }
-
-
-    /**
      * # file size The unit is M
      *
      * @param fileSize Filter max file size
@@ -1449,15 +1414,10 @@ public class PictureSelectionModel {
             if (activity == null || selectionConfig == null) {
                 return;
             }
-            Intent intent;
-            if (selectionConfig.camera && selectionConfig.isUseCustomCamera) {
-                intent = new Intent(activity, PictureCustomCameraActivity.class);
-            } else {
-                intent = new Intent(activity, selectionConfig.camera
-                        ? PictureSelectorCameraEmptyActivity.class :
-                        selectionConfig.isWeChatStyle ? PictureSelectorWeChatStyleActivity.class
-                                : PictureSelectorActivity.class);
-            }
+            Intent intent = new Intent(activity, selectionConfig.camera
+                    ? PictureSelectorCameraEmptyActivity.class :
+                    selectionConfig.isWeChatStyle ? PictureSelectorWeChatStyleActivity.class
+                            : PictureSelectorActivity.class);
             selectionConfig.isCallbackMode = false;
             Fragment fragment = selector.getFragment();
             if (fragment != null) {
@@ -1515,15 +1475,10 @@ public class PictureSelectionModel {
             // 绑定回调监听
             PictureSelectionConfig.listener = new WeakReference<>(listener).get();
             selectionConfig.isCallbackMode = true;
-            Intent intent;
-            if (selectionConfig.camera && selectionConfig.isUseCustomCamera) {
-                intent = new Intent(activity, PictureCustomCameraActivity.class);
-            } else {
-                intent = new Intent(activity, selectionConfig.camera
-                        ? PictureSelectorCameraEmptyActivity.class :
-                        selectionConfig.isWeChatStyle ? PictureSelectorWeChatStyleActivity.class
-                                : PictureSelectorActivity.class);
-            }
+            Intent intent = new Intent(activity, selectionConfig.camera
+                    ? PictureSelectorCameraEmptyActivity.class :
+                    selectionConfig.isWeChatStyle ? PictureSelectorWeChatStyleActivity.class
+                            : PictureSelectorActivity.class);
             Fragment fragment = selector.getFragment();
             if (fragment != null) {
                 fragment.startActivity(intent);
@@ -1551,15 +1506,10 @@ public class PictureSelectionModel {
             // 绑定回调监听
             PictureSelectionConfig.listener = new WeakReference<>(listener).get();
             selectionConfig.isCallbackMode = true;
-            Intent intent;
-            if (selectionConfig.camera && selectionConfig.isUseCustomCamera) {
-                intent = new Intent(activity, PictureCustomCameraActivity.class);
-            } else {
-                intent = new Intent(activity, selectionConfig.camera
-                        ? PictureSelectorCameraEmptyActivity.class :
-                        selectionConfig.isWeChatStyle ? PictureSelectorWeChatStyleActivity.class
-                                : PictureSelectorActivity.class);
-            }
+            Intent intent = new Intent(activity, selectionConfig.camera
+                    ? PictureSelectorCameraEmptyActivity.class :
+                    selectionConfig.isWeChatStyle ? PictureSelectorWeChatStyleActivity.class
+                            : PictureSelectorActivity.class);
             Fragment fragment = selector.getFragment();
             if (fragment != null) {
                 fragment.startActivityForResult(intent, requestCode);

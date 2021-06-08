@@ -1,6 +1,6 @@
 package com.luck.picture.lib.widget.longimage;
 
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 
 import java.lang.reflect.InvocationTargetException;
 

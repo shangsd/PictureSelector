@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.Gravity;
@@ -21,9 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import android.support.annotation.NonNull;
 
 import com.luck.picture.lib.broadcast.BroadcastAction;
 import com.luck.picture.lib.broadcast.BroadcastManager;
@@ -535,7 +535,7 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
-                    if (buffer != null && buffer.isOpen()) {
+                    if (buffer != null) {
                         PictureFileUtils.close(buffer);
                     }
                 }

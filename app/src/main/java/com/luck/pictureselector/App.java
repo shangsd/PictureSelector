@@ -3,10 +3,6 @@ package com.luck.pictureselector;
 import android.app.Application;
 import android.content.Context;
 
-import androidx.annotation.NonNull;
-import androidx.camera.camera2.Camera2Config;
-import androidx.camera.core.CameraXConfig;
-
 import com.luck.picture.lib.app.IApp;
 import com.luck.picture.lib.app.PictureAppMaster;
 import com.luck.picture.lib.engine.PictureSelectorEngine;
@@ -18,7 +14,7 @@ import com.luck.picture.lib.engine.PictureSelectorEngine;
  * @describe：Application
  */
 
-public class App extends Application implements IApp, CameraXConfig.Provider {
+public class App extends Application implements IApp {
     private static final String TAG = App.class.getSimpleName();
 
     @Override
@@ -35,11 +31,5 @@ public class App extends Application implements IApp, CameraXConfig.Provider {
     @Override
     public PictureSelectorEngine getPictureSelectorEngine() {
         return new PictureSelectorEngineImp();
-    }
-
-    @NonNull
-    @Override
-    public CameraXConfig getCameraXConfig() {
-        return Camera2Config.defaultConfig();
     }
 }

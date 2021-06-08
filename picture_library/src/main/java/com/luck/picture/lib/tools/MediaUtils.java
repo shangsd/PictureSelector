@@ -11,10 +11,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.media.ExifInterface;
 import android.text.TextUtils;
 
-import androidx.annotation.Nullable;
-import androidx.exifinterface.media.ExifInterface;
+import android.support.annotation.Nullable;
 
 import com.luck.picture.lib.PictureContentResolver;
 import com.luck.picture.lib.app.PictureAppMaster;
@@ -432,8 +432,8 @@ public class MediaUtils {
             queryArgs.putString(ContentResolver.QUERY_ARG_SQL_SELECTION, selection);
             queryArgs.putStringArray(ContentResolver.QUERY_ARG_SQL_SELECTION_ARGS, selectionArgs);
             queryArgs.putString(ContentResolver.QUERY_ARG_SQL_SORT_ORDER, MediaStore.Files.FileColumns._ID + " DESC");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                queryArgs.putString(ContentResolver.QUERY_ARG_SQL_LIMIT, limitCount + " offset " + offset);
+            if (Build.VERSION.SDK_INT >= 30) {// R
+                queryArgs.putString("android:query-arg-sql-limit", limitCount + " offset " + offset);
             }
         }
         return queryArgs;

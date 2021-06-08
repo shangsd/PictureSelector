@@ -2,8 +2,10 @@ package com.luck.picture.lib.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,18 +14,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.BlendModeColorFilterCompat;
-import androidx.core.graphics.BlendModeCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.luck.picture.lib.R;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.config.PictureSelectionConfig;
 import com.luck.picture.lib.dialog.PictureCustomDialog;
 import com.luck.picture.lib.entity.LocalMedia;
-import com.luck.picture.lib.entity.MediaExtraInfo;
 import com.luck.picture.lib.listener.OnPhotoSelectChangedListener;
 import com.luck.picture.lib.tools.AnimUtils;
 import com.luck.picture.lib.tools.AttrsUtils;
@@ -33,8 +29,7 @@ import com.luck.picture.lib.tools.StringUtils;
 import com.luck.picture.lib.tools.ToastUtils;
 import com.luck.picture.lib.tools.ValueOf;
 import com.luck.picture.lib.tools.VoiceUtils;
-
-import org.jetbrains.annotations.NotNull;
+import com.yalantis.ucrop.util.ColorFilterCompat;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -148,7 +143,7 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     @Override
-    public void onBindViewHolder(@NotNull final RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
         if (getItemViewType(position) == PictureConfig.TYPE_CAMERA) {
             CameraViewHolder headerHolder = (CameraViewHolder) holder;
             headerHolder.itemView.setOnClickListener(v -> {
@@ -159,7 +154,8 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
         } else {
             final ViewHolder contentHolder = (ViewHolder) holder;
             final LocalMedia image = data.get(showCamera ? position - 1 : position);
-            image.position = contentHolder.getAbsoluteAdapterPosition();
+//            image.position = contentHolder.getAbsoluteAdapterPosition();
+            image.position = contentHolder.getAdapterPosition();
             final String path = image.getPath();
             final String mimeType = image.getMimeType();
             if (config.checkNumMode) {
@@ -324,11 +320,13 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (config.isWithVideoImage && config.maxVideoSelectNum > 0) {
             if (getSelectedSize() >= config.maxSelectNum) {
                 boolean isSelected = contentHolder.tvCheck.isSelected();
-                ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(isSelected ?
-                                ContextCompat.getColor(context, R.color.picture_color_80) :
-                                ContextCompat.getColor(context, R.color.picture_color_half_white),
-                        BlendModeCompat.SRC_ATOP);
-                contentHolder.ivPicture.setColorFilter(colorFilter);
+                // TODO: 2021/6/7 兼容更改
+//                ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(,
+//                        BlendModeCompat.SRC_ATOP);
+//                contentHolder.ivPicture.setColorFilter(colorFilter);
+                int color = isSelected ? ContextCompat.getColor(context, R.color.picture_color_80) :
+                        ContextCompat.getColor(context, R.color.picture_color_half_white);
+                ColorFilterCompat.setColorFilter(contentHolder.ivPicture, color);
                 item.setMaxSelectEnabledMask(!isSelected);
             } else {
                 item.setMaxSelectEnabledMask(false);
@@ -341,33 +339,47 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                     if (PictureMimeType.isHasImage(media.getMimeType())) {
                         // All videos are not optional
                         if (!isSelected && !PictureMimeType.isHasImage(item.getMimeType())) {
-                            ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(ContextCompat.getColor
-                                    (context, PictureMimeType.isHasVideo(item.getMimeType()) ? R.color.picture_color_half_white : R.color.picture_color_20), BlendModeCompat.SRC_ATOP);
-                            contentHolder.ivPicture.setColorFilter(colorFilter);
+                            // TODO: 2021/6/7 兼容更改
+//                            ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(ContextCompat.getColor
+//                                    (context, PictureMimeType.isHasVideo(item.getMimeType()) ? R.color.picture_color_half_white : R.color.picture_color_20), BlendModeCompat.SRC_ATOP);
+//                            contentHolder.ivPicture.setColorFilter(colorFilter);
+                            int color = ContextCompat.getColor(context, PictureMimeType.isHasVideo(item.getMimeType())
+                                    ? R.color.picture_color_half_white : R.color.picture_color_20);
+                            ColorFilterCompat.setColorFilter(contentHolder.ivPicture, color);
+
                         }
                         item.setMaxSelectEnabledMask(PictureMimeType.isHasVideo(item.getMimeType()));
                     } else if (PictureMimeType.isHasVideo(media.getMimeType())) {
                         // All images are not optional
                         if (!isSelected && !PictureMimeType.isHasVideo(item.getMimeType())) {
-                            ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(ContextCompat.getColor
-                                    (context, PictureMimeType.isHasImage(item.getMimeType()) ? R.color.picture_color_half_white : R.color.picture_color_20), BlendModeCompat.SRC_ATOP);
-                            contentHolder.ivPicture.setColorFilter(colorFilter);
+                            // TODO: 2021/6/7 兼容更改
+//                            ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(ContextCompat.getColor
+//                                    (context, PictureMimeType.isHasImage(item.getMimeType()) ? R.color.picture_color_half_white : R.color.picture_color_20), BlendModeCompat.SRC_ATOP);
+//                            contentHolder.ivPicture.setColorFilter(colorFilter);
+                            int color = ContextCompat.getColor(context, PictureMimeType.isHasImage(item.getMimeType())
+                                    ? R.color.picture_color_half_white : R.color.picture_color_20);
+                            ColorFilterCompat.setColorFilter(contentHolder.ivPicture, color);
                         }
                         item.setMaxSelectEnabledMask(PictureMimeType.isHasImage(item.getMimeType()));
                     }
                 } else {
                     if (config.chooseMode == PictureMimeType.ofVideo() && config.maxVideoSelectNum > 0) {
                         if (!isSelected && getSelectedSize() == config.maxVideoSelectNum) {
-                            ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(ContextCompat.getColor
-                                    (context, R.color.picture_color_half_white), BlendModeCompat.SRC_ATOP);
-                            contentHolder.ivPicture.setColorFilter(colorFilter);
+                            // TODO: 2021/6/7 兼容更改
+//                            ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(ContextCompat.getColor
+//                                    (context, R.color.picture_color_half_white), BlendModeCompat.SRC_ATOP);
+//                            contentHolder.ivPicture.setColorFilter(colorFilter);
+                            ColorFilterCompat.setColorFilter(contentHolder.ivPicture, ContextCompat.getColor(context, R.color.picture_color_half_white));
                         }
                         item.setMaxSelectEnabledMask(!isSelected && getSelectedSize() == config.maxVideoSelectNum);
                     } else {
                         if (!isSelected && getSelectedSize() == config.maxSelectNum) {
-                            ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(ContextCompat.getColor
-                                    (context, R.color.picture_color_half_white), BlendModeCompat.SRC_ATOP);
-                            contentHolder.ivPicture.setColorFilter(colorFilter);
+                            // TODO: 2021/6/7 兼容更改
+//                            ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(ContextCompat.getColor
+//                                    (context, R.color.picture_color_half_white), BlendModeCompat.SRC_ATOP);
+//                            contentHolder.ivPicture.setColorFilter(colorFilter);
+                            ColorFilterCompat.setColorFilter(contentHolder.ivPicture, ContextCompat.getColor
+                                    (context, R.color.picture_color_half_white));
                         }
                         item.setMaxSelectEnabledMask(!isSelected && getSelectedSize() == config.maxSelectNum);
                     }
@@ -723,11 +735,15 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
      */
     public void selectImage(ViewHolder holder, boolean isChecked) {
         holder.tvCheck.setSelected(isChecked);
-        ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(isChecked ?
-                        ContextCompat.getColor(context, R.color.picture_color_80) :
-                        ContextCompat.getColor(context, R.color.picture_color_20),
-                BlendModeCompat.SRC_ATOP);
-        holder.ivPicture.setColorFilter(colorFilter);
+        // TODO: 2021/6/7 兼容更改
+//        ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(isChecked ?
+//                        ContextCompat.getColor(context, R.color.picture_color_80) :
+//                        ContextCompat.getColor(context, R.color.picture_color_20),
+//                BlendModeCompat.SRC_ATOP);
+//        holder.ivPicture.setColorFilter(colorFilter);
+        int color = isChecked ? ContextCompat.getColor(context, R.color.picture_color_80) :
+                ContextCompat.getColor(context, R.color.picture_color_20);
+        ColorFilterCompat.setColorFilter(holder.ivPicture, color);
     }
 
     /**

@@ -11,6 +11,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -22,15 +30,6 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.luck.picture.lib.PictureMediaScannerConnection;
 import com.luck.picture.lib.PictureSelector;
@@ -67,7 +66,7 @@ import com.luck.picture.lib.tools.ValueOf;
 import com.luck.pictureselector.adapter.GridImageAdapter;
 import com.luck.pictureselector.listener.DragListener;
 
-import org.jetbrains.annotations.NotNull;
+import android.support.annotation.NonNull;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -443,7 +442,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         //.setPictureCropStyle(mCropParameterStyle)// 动态自定义裁剪主题
                         .setPictureWindowAnimationStyle(mWindowAnimationStyle)// 自定义相册启动退出动画
                         .isWeChatStyle(isWeChatStyle)// 是否开启微信图片选择风格
-                        .isUseCustomCamera(cb_custom_camera.isChecked())// 是否使用自定义相机
                         .setLanguage(language)// 设置语言，默认中文
                         .isPageStrategy(cbPage.isChecked())// 是否开启分页策略 & 每页多少条；默认开启
                         .setRecyclerAnimationMode(animationMode)// 列表动画效果
@@ -545,7 +543,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .setPictureCropStyle(mCropParameterStyle)// 动态自定义裁剪主题
                         .setPictureWindowAnimationStyle(mWindowAnimationStyle)// 自定义相册启动退出动画
                         .maxSelectNum(maxSelectNum)// 最大图片选择数量
-                        .isUseCustomCamera(cb_custom_camera.isChecked())// 是否使用自定义相机
                         //.setOutputCameraPath()// 自定义相机输出目录
                         .minSelectNum(1)// 最小选择数量
                         //.querySpecifiedFormatSuffix(PictureMimeType.ofPNG())// 查询指定后缀格式资源
@@ -756,14 +753,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (type) {
                 case PictureConfig.TYPE_IMAGE:
                     // 拍照
-//                    if (context instanceof Activity) {
-//                        Intent intent = new Intent(context, PictureCustomCameraActivity.class);
-//                        ((Activity) context).startActivityForResult(intent, PictureConfig.REQUEST_CAMERA);
-//                        PictureWindowAnimationStyle windowAnimationStyle = config.windowAnimationStyle;
-//                        ((Activity) context).overridePendingTransition(windowAnimationStyle != null &&
-//                                windowAnimationStyle.activityEnterAnimation != 0 ?
-//                                windowAnimationStyle.activityEnterAnimation : R.anim.picture_anim_enter, R.anim.picture_anim_fade_in);
-//                    }
                     ToastUtils.s(context, "Click Camera Image");
                     break;
                 case PictureConfig.TYPE_VIDEO:
@@ -1495,7 +1484,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onSaveInstanceState(@NotNull Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (mAdapter != null && mAdapter.getData() != null && mAdapter.getData().size() > 0) {
             outState.putParcelableArrayList("selectorList",

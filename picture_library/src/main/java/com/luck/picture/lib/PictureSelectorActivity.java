@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.os.SystemClock;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +25,9 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 
 import com.luck.picture.lib.adapter.PictureImageGridAdapter;
 import com.luck.picture.lib.animators.AlphaInAnimationAdapter;
@@ -71,7 +71,6 @@ import com.luck.picture.lib.widget.FolderPopWindow;
 import com.luck.picture.lib.widget.RecyclerPreloadView;
 import com.yalantis.ucrop.UCrop;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.InputStream;
@@ -576,7 +575,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
     }
 
     @Override
-    protected void onSaveInstanceState(@NotNull Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (mAdapter != null) {
             // Save the number of pictures or videos in the current list
@@ -913,12 +912,6 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                 }
                 return;
             }
-            if (config.chooseMode != PictureMimeType.ofAudio()) {
-                if (config.isUseCustomCamera) {
-                    startCustomCamera();
-                    return;
-                }
-            }
             switch (config.chooseMode) {
                 case PictureConfig.TYPE_ALL:
                     PhotoItemSelectedDialog selectedDialog = PhotoItemSelectedDialog.newInstance();
@@ -937,22 +930,6 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                 default:
                     break;
             }
-        }
-    }
-
-    /**
-     * Open Custom Camera
-     */
-    private void startCustomCamera() {
-        if (PermissionChecker.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)) {
-            Intent intent = new Intent(this, PictureCustomCameraActivity.class);
-            startActivityForResult(intent, PictureConfig.REQUEST_CAMERA);
-            PictureWindowAnimationStyle windowAnimationStyle = PictureSelectionConfig.windowAnimationStyle;
-            overridePendingTransition(windowAnimationStyle.activityEnterAnimation, R.anim.picture_anim_fade_in);
-        } else {
-            PermissionChecker
-                    .requestPermissions(this,
-                            new String[]{Manifest.permission.RECORD_AUDIO}, PictureConfig.APPLY_RECORD_AUDIO_PERMISSIONS_CODE);
         }
     }
 
@@ -1823,7 +1800,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
-                        if (buffer != null && buffer.isOpen()) {
+                        if (buffer != null) {
                             PictureFileUtils.close(buffer);
                         }
                     }
@@ -2393,14 +2370,6 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                 } else {
                     showPermissionsDialog(false, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE}, getString(R.string.picture_jurisdiction));
-                }
-                break;
-            case PictureConfig.APPLY_RECORD_AUDIO_PERMISSIONS_CODE:
-                // Recording Permissions
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startCustomCamera();
-                } else {
-                    showPermissionsDialog(false, new String[]{Manifest.permission.RECORD_AUDIO}, getString(R.string.picture_audio));
                 }
                 break;
         }

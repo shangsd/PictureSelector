@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -146,7 +146,9 @@ public class GridImageAdapter extends
         } else {
             viewHolder.mIvDel.setVisibility(View.VISIBLE);
             viewHolder.mIvDel.setOnClickListener(view -> {
-                int index = viewHolder.getAbsoluteAdapterPosition();
+                // TODO: 2021/6/7 兼容更改
+//                int index = viewHolder.getAbsoluteAdapterPosition();
+                int index = viewHolder.getAdapterPosition();
                 if (index != RecyclerView.NO_POSITION && list.size() > index) {
                     list.remove(index);
                     notifyItemRemoved(index);
@@ -211,14 +213,18 @@ public class GridImageAdapter extends
             //itemView 的点击事件
             if (mItemClickListener != null) {
                 viewHolder.itemView.setOnClickListener(v -> {
-                    int adapterPosition = viewHolder.getAbsoluteAdapterPosition();
+                    // TODO: 2021/6/7 兼容更改
+//                    int adapterPosition = viewHolder.getAbsoluteAdapterPosition();
+                    int adapterPosition = viewHolder.getAdapterPosition();
                     mItemClickListener.onItemClick(v, adapterPosition);
                 });
             }
 
             if (mItemLongClickListener != null) {
                 viewHolder.itemView.setOnLongClickListener(v -> {
-                    int adapterPosition = viewHolder.getAbsoluteAdapterPosition();
+                    // TODO: 2021/6/7 兼容更改
+//                    int adapterPosition = viewHolder.getAbsoluteAdapterPosition();
+                    int adapterPosition = viewHolder.getAdapterPosition();
                     mItemLongClickListener.onItemLongClick(viewHolder, adapterPosition, v);
                     return true;
                 });

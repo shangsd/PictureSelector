@@ -2,8 +2,8 @@ package com.luck.picture.lib.style;
 
 import android.graphics.Color;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.DrawableRes;
+import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 
 import com.luck.picture.lib.R;
 

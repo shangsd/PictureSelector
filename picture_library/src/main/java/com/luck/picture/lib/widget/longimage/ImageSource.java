@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;

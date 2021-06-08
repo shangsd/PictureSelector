@@ -6,14 +6,14 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -64,28 +64,26 @@ public class PictureSelectorCameraEmptyActivity extends PictureBaseActivity {
             exit();
             return;
         }
-        if (!config.isUseCustomCamera) {
-            setActivitySize();
-            if (savedInstanceState == null) {
-                if (PermissionChecker
-                        .checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) &&
-                        PermissionChecker
-                                .checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        setActivitySize();
+        if (savedInstanceState == null) {
+            if (PermissionChecker
+                    .checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) &&
+                    PermissionChecker
+                            .checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
-                    if (PictureSelectionConfig.onCustomCameraInterfaceListener != null) {
-                        if (config.chooseMode == PictureConfig.TYPE_VIDEO) {
-                            PictureSelectionConfig.onCustomCameraInterfaceListener.onCameraClick(getContext(), config, PictureConfig.TYPE_VIDEO);
-                        } else {
-                            PictureSelectionConfig.onCustomCameraInterfaceListener.onCameraClick(getContext(), config, PictureConfig.TYPE_IMAGE);
-                        }
+                if (PictureSelectionConfig.onCustomCameraInterfaceListener != null) {
+                    if (config.chooseMode == PictureConfig.TYPE_VIDEO) {
+                        PictureSelectionConfig.onCustomCameraInterfaceListener.onCameraClick(getContext(), config, PictureConfig.TYPE_VIDEO);
                     } else {
-                        onTakePhoto();
+                        PictureSelectionConfig.onCustomCameraInterfaceListener.onCameraClick(getContext(), config, PictureConfig.TYPE_IMAGE);
                     }
                 } else {
-                    PermissionChecker.requestPermissions(this, new String[]{
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE}, PictureConfig.APPLY_STORAGE_PERMISSIONS_CODE);
+                    onTakePhoto();
                 }
+            } else {
+                PermissionChecker.requestPermissions(this, new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, PictureConfig.APPLY_STORAGE_PERMISSIONS_CODE);
             }
         }
     }
@@ -117,17 +115,7 @@ public class PictureSelectorCameraEmptyActivity extends PictureBaseActivity {
     private void onTakePhoto() {
         if (PermissionChecker
                 .checkSelfPermission(this, Manifest.permission.CAMERA)) {
-            boolean isPermissionChecker = true;
-            if (config != null && config.isUseCustomCamera) {
-                isPermissionChecker = PermissionChecker.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
-            }
-            if (isPermissionChecker) {
-                startCamera();
-            } else {
-                PermissionChecker
-                        .requestPermissions(this,
-                                new String[]{Manifest.permission.RECORD_AUDIO}, PictureConfig.APPLY_RECORD_AUDIO_PERMISSIONS_CODE);
-            }
+            startCamera();
         } else {
             PermissionChecker.requestPermissions(this,
                     new String[]{Manifest.permission.CAMERA}, PictureConfig.APPLY_CAMERA_PERMISSIONS_CODE);
@@ -278,7 +266,7 @@ public class PictureSelectorCameraEmptyActivity extends PictureBaseActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
-                        if (buffer != null && buffer.isOpen()) {
+                        if (buffer != null) {
                             PictureFileUtils.close(buffer);
                         }
                     }

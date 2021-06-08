@@ -3,7 +3,7 @@ package com.luck.picture.lib.decoration;
 import android.graphics.Rect;
 import android.view.View;
 
-import androidx.recyclerview.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView;
 
 /**
  * @author：luck

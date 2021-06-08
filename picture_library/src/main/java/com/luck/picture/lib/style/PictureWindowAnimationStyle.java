@@ -3,7 +3,7 @@ package com.luck.picture.lib.style;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.AnimRes;
+import android.support.annotation.AnimRes;
 
 import com.luck.picture.lib.R;
 

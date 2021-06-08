@@ -9,12 +9,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.luck.picture.lib.app.PictureAppMaster;
 import com.luck.picture.lib.compress.Luban;
@@ -43,7 +42,7 @@ import com.luck.picture.lib.tools.StringUtils;
 import com.luck.picture.lib.tools.ToastUtils;
 import com.luck.picture.lib.tools.VoiceUtils;
 
-import org.jetbrains.annotations.NotNull;
+import android.support.annotation.NonNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -290,7 +289,7 @@ public abstract class PictureBaseActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(@NotNull Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         isOnSaveInstanceState = true;
         outState.putParcelable(PictureConfig.EXTRA_CONFIG, config);
@@ -658,8 +657,7 @@ public abstract class PictureBaseActivity extends AppCompatActivity {
         finish();
         if (config.camera) {
             overridePendingTransition(0, R.anim.picture_anim_fade_out);
-            if (getContext() instanceof PictureSelectorCameraEmptyActivity
-                    || getContext() instanceof PictureCustomCameraActivity) {
+            if (getContext() instanceof PictureSelectorCameraEmptyActivity) {
                 releaseResultListener();
             }
         } else {
@@ -722,19 +720,12 @@ public abstract class PictureBaseActivity extends AppCompatActivity {
                 cameraFileName = config.camera ? config.cameraFileName : StringUtils.rename(config.cameraFileName);
             }
             if (SdkVersionUtils.checkedAndroid_Q()) {
-                if (TextUtils.isEmpty(config.outPutCameraPath)) {
-                    imageUri = MediaUtils.createImageUri(this, config.cameraFileName, config.suffixType);
-                } else {
-                    File cameraFile = PictureFileUtils.createCameraFile(this,
-                            chooseMode, cameraFileName, config.suffixType, config.outPutCameraPath);
-                    config.cameraPath = cameraFile.getAbsolutePath();
-                    imageUri = PictureFileUtils.parUri(this, cameraFile);
-                }
+                imageUri = MediaUtils.createImageUri(this, config.cameraFileName, config.suffixType);
                 if (imageUri != null) {
                     config.cameraPath = imageUri.toString();
                 }
             } else {
-                File cameraFile = PictureFileUtils.createCameraFile(this, chooseMode, cameraFileName, config.suffixType, config.outPutCameraPath);
+                File cameraFile = PictureFileUtils.createCameraFile(this, chooseMode, cameraFileName, config.suffixType, null);
                 config.cameraPath = cameraFile.getAbsolutePath();
                 imageUri = PictureFileUtils.parUri(this, cameraFile);
             }
@@ -770,18 +761,12 @@ public abstract class PictureBaseActivity extends AppCompatActivity {
                 cameraFileName = config.camera ? config.cameraFileName : StringUtils.rename(config.cameraFileName);
             }
             if (SdkVersionUtils.checkedAndroid_Q()) {
-                if (TextUtils.isEmpty(config.outPutCameraPath)) {
-                    videoUri = MediaUtils.createVideoUri(this, config.cameraFileName, config.suffixType);
-                } else {
-                    File cameraFile = PictureFileUtils.createCameraFile(this, chooseMode, cameraFileName, config.suffixType, config.outPutCameraPath);
-                    config.cameraPath = cameraFile.getAbsolutePath();
-                    videoUri = PictureFileUtils.parUri(this, cameraFile);
-                }
+                videoUri = MediaUtils.createVideoUri(this, config.cameraFileName, config.suffixType);
                 if (videoUri != null) {
                     config.cameraPath = videoUri.toString();
                 }
             } else {
-                File cameraFile = PictureFileUtils.createCameraFile(this, chooseMode, cameraFileName, config.suffixType, config.outPutCameraPath);
+                File cameraFile = PictureFileUtils.createCameraFile(this, chooseMode, cameraFileName, config.suffixType, null);
                 config.cameraPath = cameraFile.getAbsolutePath();
                 videoUri = PictureFileUtils.parUri(this, cameraFile);
             }

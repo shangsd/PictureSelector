@@ -5,8 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 
 import com.luck.picture.lib.R;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -73,8 +73,12 @@ public class PictureWeChatPreviewGalleryAdapter
             }
             holder.ivPlay.setVisibility(PictureMimeType.isHasVideo(item.getMimeType()) ? View.VISIBLE : View.GONE);
             holder.itemView.setOnClickListener(v -> {
-                if (listener != null && holder.getAbsoluteAdapterPosition() >= 0) {
-                    listener.onItemClick(holder.getAbsoluteAdapterPosition(), getItem(position), v);
+                // TODO: 2021/6/7 兼容更改
+//                if (listener != null && holder.getAbsoluteAdapterPosition() >= 0) {
+//                    listener.onItemClick(holder.getAbsoluteAdapterPosition(), getItem(position), v);
+//                }
+                if (listener != null && holder.getAdapterPosition() >= 0) {
+                    listener.onItemClick(holder.getAdapterPosition(), getItem(position), v);
                 }
             });
         }

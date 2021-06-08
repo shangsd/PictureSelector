@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 
 import com.luck.picture.lib.R;
 import com.yalantis.ucrop.callback.CropBoundsChangeListener;

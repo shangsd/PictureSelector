@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
-import androidx.annotation.Nullable;
+import android.support.annotation.Nullable;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Request;
